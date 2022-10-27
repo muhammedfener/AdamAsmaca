@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Collections;
+
 namespace AdamAsmaca
 {
     public class Oyun
@@ -18,7 +20,7 @@ namespace AdamAsmaca
         public List<string> KelimeListesi { get => Kelimeler; set => Kelimeler = value; }
         public string SecilenKelime { get => _secilenKelime; set => _secilenKelime = value; }
         public List<Label> LabelListesi { get => _labelListesi; set => _labelListesi = value; }
-        public int KalanHak { get => _kalanHak; set => _kalanHak = value; }
+        public int KalanHak { get => _kalanHak; }
 
         public Oyun(List<string> kelimeler)
         {
@@ -54,20 +56,30 @@ namespace AdamAsmaca
             }
         }
 
-        public int HarfGir(char harf)
+        public List<int> HarfGir(char harf)
         {
+            List<int> donecekler = new List<int>();
             if(KalanHak == 0)
             {
-                return -100;
+                donecekler.Add(-100);
+                return donecekler;
             }
             if (SecilenKelime.Contains(harf))
             {
-                return SecilenKelime.IndexOf(harf);
+                for(int a=0;a<SecilenKelime.Length;a++)
+                {
+                    if (SecilenKelime[a] == harf)
+                    {
+                        donecekler.Add(a);
+                    }
+                }
+                return donecekler;
             }
             else
             {
-                KalanHak--;
-                return -1;
+                _kalanHak--;
+                donecekler.Add(-1);
+                return donecekler;
             }
         }
     }
